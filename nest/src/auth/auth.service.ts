@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SignupDto } from 'src/dtos/auth';
+import { SignupDto } from 'src/auth/dtos/auth';
 
 @Injectable()
 export class AuthService {

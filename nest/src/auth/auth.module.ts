@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from './delete.service';
+import { DeleteModule } from 'src/delete/delete.module';
+
 
 @Module({
+  imports:[DeleteModule],
   controllers: [AuthController],
-  providers: [AuthService, PrismaService, UserService], // registre ele aqui
+  providers: [AuthService, PrismaService, ], // registre ele aqui
 })
 export class AuthModule {}

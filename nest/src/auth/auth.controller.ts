@@ -1,35 +1,33 @@
 import { AuthService } from './auth.service';
 import { Body, Controller, Post } from '@nestjs/common';
-import { SignupDto } from 'src/dtos/auth';
-import { UserService } from './delete.service';  // seu serviço de delete
-
-class CancelUserDto {
-  name: string;
-  email: string;
-}
+import { SignupDto } from 'src/auth/dtos/auth';
+import { CancelUserDto } from '../delete/dtos/cancel-user.dtos';
+import { DeleteService } from 'src/delete/delete.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
+    private deleteService: DeleteService,
   ) {}
 
   @Post('signup')
   async signup(@Body() body: SignupDto) {
-    console.log({ body });
     return this.authService.signup(body);
   }
 
   @Post('cancel')
   async cancelUser(@Body() body: CancelUserDto) {
-    const { name, email } = body;
-    const result = await this.userService.deleteUserByNameEmail(name, email);
+    const result = await this.deleteService.deleteUserByNameEmail(body.name, body.email);
 
     if (result.count === 0) {
-      return { message: 'Usuário não encontrado para esses dados.' };
+      return { message: 'Usuário não encontrado.' };
     }
 
     return { message: 'Usuário deletado com sucesso.' };
   }
+
+
+
+  
 }

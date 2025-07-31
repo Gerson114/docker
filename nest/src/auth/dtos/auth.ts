@@ -8,7 +8,3 @@ export interface SignupDto {
 
 
 
-export interface SigninDto {
-    email: string;
-    password: string;
-}
