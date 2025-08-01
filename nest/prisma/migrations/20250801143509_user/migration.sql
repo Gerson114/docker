@@ -5,12 +5,10 @@ CREATE TABLE "<esquema>"."User" (
     "email" TEXT NOT NULL,
     "horario" INTEGER NOT NULL,
     "data" TIMESTAMP(3) NOT NULL,
+    "valor" INTEGER NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_horario_key" ON "<esquema>"."User"("horario");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_data_key" ON "<esquema>"."User"("data");
+CREATE UNIQUE INDEX "User_data_horario_key" ON "<esquema>"."User"("data", "horario");

@@ -13,18 +13,19 @@ export class AuthService {
       throw new UnauthorizedException('Hora inicial deve ser menor que a final');
     }
 
+    const valorPorHora = 60;
     const dataBase = parseDateBR(dataStr);
 
     const reservasCriadas: {
       id: number;
       horario: number;
       data: Date;
+      // valor removido aqui
     }[] = [];
 
-    // Verifica todas as horas do intervalo
     for (let hora = horaInicio; hora < horaFim; hora++) {
       const dataComHora = new Date(dataBase);
-      dataComHora.setHours(hora);
+      dataComHora.setHours(hora, 0, 0, 0);
 
       const existente = await this.prismaService.user.findFirst({
         where: {
@@ -43,6 +44,7 @@ export class AuthService {
           email,
           horario: hora,
           data: dataComHora,
+          valor: valorPorHora,
         },
       });
 
@@ -50,29 +52,26 @@ export class AuthService {
         id: reserva.id,
         horario: reserva.horario,
         data: reserva.data,
+        // não inclua valor aqui
       });
     }
 
-    const valorTotal = (horaFim - horaInicio) * 60;
+    const totalHoras = horaFim - horaInicio;
+    const valorTotal = totalHoras * valorPorHora;
 
     return {
       nome: name,
       email,
       data: dataStr,
-      totalHoras: horaFim - horaInicio,
-      valor: `R$${valorTotal},00`,
+      totalHoras,
+      valor: `R$${valorTotal},00`, // só aqui o valor aparece
       reservas: reservasCriadas,
     };
   }
 }
 
-
-
-// Função auxiliar para converter "10/03/2025" → Date
+// Função para converter data BR para Date local
 function parseDateBR(dateStr: string): Date {
-  const [day, month, year] = dateStr.split('/');
-  return new Date(`${year}-${month}-${day}T00:00:00`);
+  const [day, month, year] = dateStr.split('/').map(Number);
+  return new Date(year, month - 1, day, 0, 0, 0, 0);
 }
-
-
-

@@ -4,6 +4,8 @@ export interface SignupDto {
   horaInicio: number; // exemplo: 1
   horaFim: number;    // exemplo: 5
   data: string;       // formato: "dd/mm/yyyy"
+  valor: number
+  
 }
 
 
