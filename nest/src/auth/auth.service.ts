@@ -7,7 +7,7 @@ export class AuthService {
   constructor(private prismaService: PrismaService) {}
 
   async signup(data: SignupDto) {
-    const { name, email, horaInicio, horaFim, data: dataStr } = data;
+    const { name, email, telefone, horaInicio, horaFim, data: dataStr } = data;
 
     if (horaInicio >= horaFim) {
       throw new UnauthorizedException('Hora inicial deve ser menor que a final');
@@ -42,6 +42,7 @@ export class AuthService {
         data: {
           name,
           email,
+          telefone,      // <--- aqui adicionei telefone
           horario: hora,
           data: dataComHora,
           valor: valorPorHora,
@@ -62,9 +63,10 @@ export class AuthService {
     return {
       nome: name,
       email,
+      telefone,          // <--- retorno do telefone também
       data: dataStr,
       totalHoras,
-      valor: `R$${valorTotal},00`, // só aqui o valor aparece
+      valor: `R$${valorTotal},00`,
       reservas: reservasCriadas,
     };
   }

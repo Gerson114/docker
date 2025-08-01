@@ -3,9 +3,10 @@ CREATE TABLE "<esquema>"."User" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "telefone" TEXT NOT NULL,
     "horario" INTEGER NOT NULL,
     "data" TIMESTAMP(3) NOT NULL,
-    "valor" INTEGER NOT NULL,
+    "valor" INTEGER NOT NULL DEFAULT 60,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
